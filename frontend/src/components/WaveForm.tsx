@@ -54,8 +54,8 @@ const WaveForm: React.FC<WaveFormProps> = ({ analyserNode }) => {
     <canvas
       ref={canvasRef}
       className="w-full h-full"
-      width={800}
-      height={200}
+      width={200}
+      height={50}
     />
   );
 };

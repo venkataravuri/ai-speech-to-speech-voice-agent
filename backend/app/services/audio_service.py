@@ -1,5 +1,15 @@
 import json
 import base64
+from .stt import STTModule
+from .llm import LLMModule
+from .tts import TTSModule
+from .memory import MemoryModule
+
+# Initialize modules
+stt_module = STTModule()
+llm_module = LLMModule()
+tts_module = TTSModule()
+memory = MemoryModule()
 
 class AudioService:
     async def process_audio_message(self, message_data: str) -> str:
@@ -10,27 +20,37 @@ class AudioService:
             # Process audio data
             audio_bytes = base64.b64decode(message["content"])
 
-            # Here you would add your STT processing
-            # For now, returning mock responses
+            # Step 1: Convert audio to text
+            user_input = stt_module.transcribe(audio_bytes)
+
+            # Step 2: Add input to memory and retrieve context
+            memory.add_context(user_input)
+            context = memory.get_context()
+
+            # Step 3: Generate LLM response
+            response_text = llm_module.generate_response(user_input)
+
+            # Step 4: Convert response to audio
+            audio_base64 = tts_module.synthesize(response_text)
 
             # Send transcription
             text_response = {
                 "type": "text",
                 "source": "user",
-                "content": "User speech transcription would appear here"
+                "content": user_input
             }
 
             # Send AI response
             agent_response = {
                 "type": "text",
                 "source": "agent",
-                "content": "AI agent response would appear here"
+                "content": response_text
             }
 
             # Send TTS audio
             audio_response = {
                 "type": "audio",
-                "content": message["content"]  # Echo back for demo
+                "content": audio_base64
             }
             
             return json.dumps([text_response, agent_response, audio_response])

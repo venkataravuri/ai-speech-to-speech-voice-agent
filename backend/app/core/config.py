@@ -5,8 +5,10 @@ class Settings(BaseSettings):
     APP_NAME: str = "Speech AI Agent"
     DEBUG: bool = True
     CORS_ORIGINS: List[str] = ["http://localhost:3000"]
+    HF_TOKEN: str 
+
     
     class Config:
-        env_file = "../../.env"
+        env_file = ".env"
 
 settings = Settings()
