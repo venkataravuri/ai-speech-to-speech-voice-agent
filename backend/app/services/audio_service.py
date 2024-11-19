@@ -1,14 +1,11 @@
 import json
 import base64
-from .stt import STTModule
-from .llm import LLMModule
-from .tts import TTSModule
+from .stt import stt_module
+from .llm import llm_module
+from .tts import tts_module
 from .memory import MemoryModule
 
 # Initialize modules
-stt_module = STTModule()
-llm_module = LLMModule()
-tts_module = TTSModule()
 memory = MemoryModule()
 
 class AudioService:
@@ -28,10 +25,12 @@ class AudioService:
             context = memory.get_context()
 
             # Step 3: Generate LLM response
-            response_text = llm_module.generate_response(user_input)
+            response_text = None
+            # response_text = llm_module.generate_response(user_input)
 
             # Step 4: Convert response to audio
-            audio_base64 = tts_module.synthesize(response_text)
+            # audio_base64 = tts_module.synthesize(response_text)
+            audio_base64 = None
 
             # Send transcription
             text_response = {

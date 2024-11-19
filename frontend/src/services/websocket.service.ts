@@ -8,6 +8,7 @@ class WebSocketService {
   }
 
   connect() {
+    console.log(this.url);
     this.ws = new WebSocket(this.url);
 
     this.ws.onmessage = (event) => {

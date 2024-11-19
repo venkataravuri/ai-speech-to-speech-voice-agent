@@ -13,6 +13,7 @@ const App: React.FC = () => {
   const webSocketService = useRef<WebSocketService | null>(null);
 
   useEffect(() => {
+    console.log(process.env.REACT_APP_WS_URL!)
     webSocketService.current = new WebSocketService(process.env.REACT_APP_WS_URL!);
     webSocketService.current.connect();
 
