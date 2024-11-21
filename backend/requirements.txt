@@ -13,6 +13,6 @@ transformers==4.46.2
 pydub==0.25.1
 python-multipart==0.0.17
 accelerate==1.1.1
-pytest==8.3.3
 soundfile==0.12.1
 datasets==3.1.0
+pytest-asyncio
