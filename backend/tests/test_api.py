@@ -4,6 +4,7 @@ import pytest
 from websockets import connect
 import pydub
 import io
+from app.services.stt import stt_module
 
 @pytest.fixture
 async def client():
@@ -14,7 +15,7 @@ async def client():
 @pytest.mark.asyncio
 async def test_api(client):
 
-    wav_file = pydub.AudioSegment.from_file("data/female-vocal-321-countdown-240912.mp3", format="mp3")
+    wav_file = pydub.AudioSegment.from_file("data/you-got-it-1.wav", format="wav")
 
 
     # data type for the file
@@ -46,8 +47,8 @@ async def test_api(client):
     We can change the attributes of file by
     changeed_audio_segment = audio_segment.set_ATTRIBUTENAME(x)
     '''
-    wav_file_new = wav_file.set_frame_rate(50)
-    print(wav_file_new.frame_rate)
+    # wav_file_new = wav_file.set_frame_rate(50)
+    # print(wav_file_new.frame_rate)
 
     # Step 2: Convert the AudioSegment to raw data or a specific format
     # Here we use WAV format
@@ -55,20 +56,25 @@ async def test_api(client):
     wav_file.export(buffer, format="wav")
     buffer.seek(0)  # Reset buffer position to the beginning
 
+    wav_file.export("x.wav", format="wav")
+
     audio_bytes = buffer.read()
-    audio_base64 = base64.b64encode(audio_bytes).decode("utf-8")
+    stt_module.load_model()
+    user_input = stt_module.transcribe(audio_bytes)
+    print(f"{user_input = }")
+    # audio_base64 = base64.b64encode(audio_bytes).decode("utf-8")
 
-    payload = {
-          'type': 'audio',
-          'content': audio_base64,
-    }
+    # payload = {
+    #       'type': 'audio',
+    #       'content': audio_base64,
+    # }
 
-    payload_json = json.dumps(payload)
+    # payload_json = json.dumps(payload)
 
-    await client.send(payload_json)
+    # await client.send(payload_json)
 
-    response = await client.recv()
-    print(f"{response =}")
+    # response = await client.recv()
+    # print(f"{response =}")
 
-    client.close()
+    # client.close()
     # assert response == "pong"

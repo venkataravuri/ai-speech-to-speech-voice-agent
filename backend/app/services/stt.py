@@ -15,12 +15,12 @@ class STTModule:
     
     def transcribe(self, audio_chunks: bytes) -> str:
         audio_array = np.frombuffer(audio_chunks, dtype=np.float32)
-        logger.debug(f"audio length: {audio_array}")
-        input_features = self.processor(audio_array, sampling_rate=16000, return_tensors="pt").input_features
+        print(f"{len(audio_array) = }")
+        input_features = self.processor(audio_array, return_tensors="pt").input_features
         input_features = input_features.to(self.device)
         predicted_ids = self.model.generate(input_features)
         transcription = self.processor.batch_decode(predicted_ids, skip_special_tokens=True)[0]
-        logger.debug(f"Transcription: {transcription}")
+        print(f"Transcription: {transcription}")
         return transcription
 
 # Singleton instance of the STT Module

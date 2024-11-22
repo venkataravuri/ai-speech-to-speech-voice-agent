@@ -17,11 +17,11 @@ class AudioService:
         if message["type"] == "audio":
             # Process audio data
             audio_bytes = base64.b64decode(message["content"])
-            logger.debug(f"{len(audio_bytes) = }")
+            logger.info(f"{len(audio_bytes) = }")
 
             # Step 1: Convert audio to text
             user_input = stt_module.transcribe(audio_bytes)
-            logger.debug(f"{user_input = }")
+            logger.info(f"{user_input = }")
 
             # Step 2: Add input to memory and retrieve context
             memory.add_context(user_input)
