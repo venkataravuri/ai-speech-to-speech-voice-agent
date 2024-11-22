@@ -14,6 +14,7 @@ async def load_models():
     stt_module.load_model()
     # llm_module.load_model()
     # tts_module.load_model()
+    ...
 
 # Configure CORS
 app.add_middleware(
